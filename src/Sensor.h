@@ -40,10 +40,11 @@ public:
     const uint8_t pin;
     const char *name;
     const bool numeric_only;
+    const bool publish_raw;
     const bool status_led_enabled;
     const bool status_led_inverted;
     const uint8_t status_led_pin;
-    const uint8_t interval;
+    const uint16_t interval;
 };
 
 class Sensor

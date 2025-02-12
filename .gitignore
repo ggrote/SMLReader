@@ -2,6 +2,7 @@
 .pioenvs
 .piolibdeps
 .vscode/
+.idea/
 
 # Mac stuff
 .DS_Store

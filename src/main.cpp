@@ -36,6 +36,10 @@ boolean needReset = false;
 
 void process_message(byte *buffer, size_t len, Sensor *sensor)
 {
+    if (sensor->config->publish_raw) {
+        publisher.publishRaw(sensor, buffer, len);
+    }
+
 	// Parse
 	sml_file *file = sml_file_parse(buffer + 8, len - 16);
 

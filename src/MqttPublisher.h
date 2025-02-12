@@ -20,11 +20,11 @@ using namespace std;
 
 struct MqttConfig
 {
-  char server[128] = "mosquitto";
+  char server[128] = "raspberrypi.fritz.box";
   char port[8] = "1883";
   char username[128] = "";
   char password[128] = "";
-  char topic[128] = "iot/smartmeter/";
+  char topic[128] = "house/smartmeter/";
 };
 
 class MqttPublisher
@@ -65,6 +65,11 @@ public:
   {
     publish(baseTopic + "info", message);
   }
+
+    void publishRaw(Sensor *sensor, const byte *buffer, size_t len) {
+        String rawTopic = baseTopic + "sensor/" + (sensor->config->name) + "/raw";
+        publish(rawTopic.c_str(), buffer, len);
+    }
 
   void publish(Sensor *sensor, sml_file *file)
   {
@@ -167,6 +172,14 @@ private:
   void publish(const char *topic, const String &payload, uint8_t qos=0, bool retain=false)
   {
     publish(topic, payload.c_str(), qos, retain);
+  }
+
+  void publish(const char *topic, const byte *buffer, size_t len, uint8_t qos=0, bool retain=false)
+  {
+      if (this->connected)
+      {
+          client.publish(topic, qos, retain, reinterpret_cast<const char *>(buffer), len);
+      }
   }
 
 
